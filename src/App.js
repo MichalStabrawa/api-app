@@ -5,7 +5,6 @@ import InputComponent from "./components/InputComponent";
 
 function App() {
   const [data, setData] = useState([]);
-  const [flag, setFlag] = useState(false);
 
   //fetch API
   const fetchPhotos = async () => {
@@ -25,13 +24,12 @@ function App() {
 
   const onHandleChange = (e) => {
     const value = e.target.value;
-
+    //filtrowanie po title
     const filtered = data.filter((el) => el.title.includes(value));
     setData(filtered);
   };
 
   const onHandleClear = () => {
-    setFlag(true);
     fetchPhotos();
   };
 
@@ -41,7 +39,7 @@ function App() {
 
   return (
     <div className="App">
-      <InputComponent event={onHandleClear} onchange={onHandleChange} />
+      <InputComponent data={data} event={onHandleClear} onchange={onHandleChange} />
       <ListComponent data={data} />
     </div>
   );
