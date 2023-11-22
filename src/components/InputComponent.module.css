@@ -1,0 +1,21 @@
+.input_wrapper {
+    
+    padding: 40px 20px;
+    background-color: #f4eaec;
+    margin-bottom: 20px;
+}
+
+.input_wrapper input[type="search"] {
+    height: 30px;
+    width:250px;
+    margin-right: 10px;
+}
+
+.input_wrapper button {
+height: 30px;
+width:100px;
+margin-left:20px;
+background:#e70d36;
+cursor:pointer;
+border:1px solid;
+}
