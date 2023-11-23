@@ -5,10 +5,14 @@ import InputComponent from "./components/InputComponent";
 
 function App() {
   const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [radioValue, setName] = useState("title");
 
-  //fetch API
+  //fetch API photos
   const fetchPhotos = async () => {
     const url = "https://jsonplaceholder.typicode.com/albums/1/photos";
+    const urlUserId =
+      "https://jsonplaceholder.typicode.com/albums/1/photos?id=";
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -22,15 +26,46 @@ function App() {
     }
   };
 
-  const onHandleChange = (e) => {
+  //fetch API photos id
+  const fetchPhotosId = async (id) => {
+    const urlUserId = `https://jsonplaceholder.typicode.com/albums/1/photos?id=${id}`;
+    try {
+      const response = await fetch(urlUserId);
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      const data = await response.json();
+
+      setData(data);
+    } catch (error) {
+      console.error(`Could not get ${error}`);
+    }
+  };
+
+  const onHandleChangeSearch = (e) => {
     const value = e.target.value;
-    //filtrowanie po title
-    const filtered = data.filter((el) => el.title.includes(value));
-    setData(filtered);
+
+    if (radioValue === "title") {
+       //filtrowanie po title po stronie przegladarki
+      const filtered = data.filter((el) => el.title.includes(value));
+      setSearch(value);
+      setData(filtered);
+    } else {
+      //filtrowanie z API po ID
+      setSearch(value);
+      fetchPhotosId(value);
+    }
+   
+  };
+
+  const onHandleChangeRadio = (e) => {
+    const value = e.target.value;
+    setName(value);
   };
 
   const onHandleClear = () => {
     fetchPhotos();
+    setSearch("");
   };
 
   useEffect(() => {
@@ -39,7 +74,40 @@ function App() {
 
   return (
     <div className="App">
-      <InputComponent data={data} event={onHandleClear} onchange={onHandleChange} />
+      <InputComponent
+        data={data}
+        event={onHandleClear}
+        onchange={onHandleChangeSearch}
+        value={search}
+        name={radioValue}
+      />
+      <fieldset>
+        <legend>Select a filter</legend>
+
+        <div>
+          <input
+            type="radio"
+            id="title"
+            name="title"
+            value="title"
+            onChange={onHandleChangeRadio}
+            checked={radioValue === "title"}
+          />
+          <label>title</label>
+        </div>
+
+        <div>
+          <input
+            type="radio"
+            id="id"
+            name="id"
+            value="id"
+            onChange={onHandleChangeRadio}
+            checked={radioValue === "id"}
+          />
+          <label>id</label>
+        </div>
+      </fieldset>
       <ListComponent data={data} />
     </div>
   );
