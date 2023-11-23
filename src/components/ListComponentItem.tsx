@@ -1,10 +1,12 @@
 import { useState } from "react";
-import styles from "./ListComponentItem.module.css";
-export default function ListComponentsItem(props) {
-  const [flag, setFlag] = useState(false);
+import React from "react";
+import { DataList } from "../App";
+
+export default function ListComponentsItem(props: DataList) {
+  const [flag, setFlag] = useState<boolean>(false);
 
   //destructuring props
-  const { id, title, album, url, thumbnailUrl } = props;
+  const { id, title, albumId, url, thumbnailUrl } = props;
 
   const handleImg = () => {
     setFlag(!flag);
@@ -21,9 +23,9 @@ export default function ListComponentsItem(props) {
         <figcaption>{title}</figcaption>
       </figure>
       {flag ? (
-        <div className={styles.content}>
+        <div className="content">
           <p>{`id: ${id}`}</p>
-          <p>{`albumId: ${album}`}</p>
+          <p>{`albumId: ${albumId}`}</p>
           <p> {`title: ${title}`}</p>
           <p>{`url: ${url}`}</p>
           <p>{`thumbnailUrl: ${thumbnailUrl}`}</p>

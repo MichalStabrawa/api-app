@@ -1,10 +1,12 @@
 import ListComponentItem from "./ListComponentItem";
-import styles from "./ListComponent.module.css";
 
-export default function ListComponents(props) {
+import React from "react";
+import { DataList } from "src/App";
+
+export default function ListComponents(props: { data: { id: number; url: string; thumbnailUrl: string; title: string; albumId: number; }[]; }) {
   return (
-    <ul className={styles.list}>
-      {props.data.map((el) => {
+    <ul className="list">
+      {props.data.map((el: DataList) => {
         const { id, url, thumbnailUrl, title, albumId } = el;
 
         return (
@@ -13,7 +15,7 @@ export default function ListComponents(props) {
             url={url}
             thumbnailUrl={thumbnailUrl}
             title={title}
-            album={albumId}
+            albumId={albumId}
             id={id}
           />
         );

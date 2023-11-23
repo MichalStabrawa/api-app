@@ -2,17 +2,28 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import ListComponent from "./components/ListComponent";
 import InputComponent from "./components/InputComponent";
+import React from "react";
+
+export interface DataList {
+  id: number;
+  title: string;
+  albumId: number;
+  url: string;
+  thumbnailUrl: string;
+}
 
 function App() {
-  const [data, setData] = useState([]);
-  const [search, setSearch] = useState("");
-  const [radioValue, setName] = useState("title");
+  const [data, setData] = useState<DataList[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const [radioValue, setName] = useState<string>("title");
+  const [isLoading, setIsLoading] = useState<string>("");
 
   //fetch API photos
   const fetchPhotos = async () => {
     const url = "https://jsonplaceholder.typicode.com/albums/1/photos";
 
     try {
+      setIsLoading("Is Loading");
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`);
@@ -23,11 +34,13 @@ function App() {
     } catch (error) {
       console.error(`Could not get ${error}`);
     }
+    setIsLoading("");
   };
 
   //fetch API photos id
-  const fetchPhotosId = async (id) => {
+  const fetchPhotosId = async (id: string) => {
     const urlUserId = `https://jsonplaceholder.typicode.com/albums/1/photos?id=${id}`;
+    setIsLoading("Is Loading........");
     try {
       const response = await fetch(urlUserId);
       if (!response.ok) {
@@ -39,14 +52,18 @@ function App() {
     } catch (error) {
       console.error(`Could not get ${error}`);
     }
+    setIsLoading("");
   };
 
-  const onHandleChangeSearch = (e) => {
+  const onHandleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     if (radioValue === "title") {
       //filtrowanie po title (text) po stronie przegladarki
-      const filtered = data.filter((el) => el.title.includes(value));
+      const filtered = data.filter((el: DataList) => el.title.includes(value));
+      setSearch(value);
+      setData(filtered);
+
       setSearch(value);
       setData(filtered);
     } else {
@@ -56,7 +73,7 @@ function App() {
     }
   };
 
-  const onHandleChangeRadio = (e) => {
+  const onHandleChangeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setName(value);
   };
@@ -73,7 +90,7 @@ function App() {
   return (
     <div className="App">
       <InputComponent
-        data={data}
+        data={data.length}
         event={onHandleClear}
         onchange={onHandleChangeSearch}
         value={search}
@@ -104,6 +121,7 @@ function App() {
           <label>id</label>
         </div>
       </fieldset>
+      {isLoading}
       <ListComponent data={data} />
     </div>
   );
