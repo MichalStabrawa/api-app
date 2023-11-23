@@ -1,9 +1,9 @@
-import styles from "./InputComponent.module.css";
+import React from "react";
 
-export default function InputComponent(props) {
+export default function InputComponent(props: { onchange: React.ChangeEventHandler; event: React.MouseEventHandler<HTMLButtonElement>; data:number ; value: string; name: string; }) {
   const { onchange, event, data, value, name } = props;
   return (
-    <div className={styles.input_wrapper}>
+    <div className="input_wrapper">
       <input
         type="search"
         onChange={onchange}
@@ -13,8 +13,8 @@ export default function InputComponent(props) {
       <label>Search</label>
       <button onClick={event}>Clear</button>
 
-      {data.length === 0 && (
-        <p className={styles.invalid}>
+      {!data && (
+        <p className="invalid">
           There are no results!!!!, press the clear button!!!
         </p>
       )}
