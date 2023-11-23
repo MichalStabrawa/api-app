@@ -11,8 +11,7 @@ function App() {
   //fetch API photos
   const fetchPhotos = async () => {
     const url = "https://jsonplaceholder.typicode.com/albums/1/photos";
-    const urlUserId =
-      "https://jsonplaceholder.typicode.com/albums/1/photos?id=";
+
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -46,7 +45,7 @@ function App() {
     const value = e.target.value;
 
     if (radioValue === "title") {
-       //filtrowanie po title po stronie przegladarki
+      //filtrowanie po title (text) po stronie przegladarki
       const filtered = data.filter((el) => el.title.includes(value));
       setSearch(value);
       setData(filtered);
@@ -55,7 +54,6 @@ function App() {
       setSearch(value);
       fetchPhotosId(value);
     }
-   
   };
 
   const onHandleChangeRadio = (e) => {
@@ -83,7 +81,6 @@ function App() {
       />
       <fieldset>
         <legend>Select a filter</legend>
-
         <div>
           <input
             type="radio"
@@ -95,7 +92,6 @@ function App() {
           />
           <label>title</label>
         </div>
-
         <div>
           <input
             type="radio"
