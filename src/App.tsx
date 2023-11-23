@@ -16,12 +16,14 @@ function App() {
   const [data, setData] = useState<DataList[]>([]);
   const [search, setSearch] = useState<string>("");
   const [radioValue, setName] = useState<string>("title");
+  const [isLoading, setIsLoading] = useState<string>("");
 
   //fetch API photos
   const fetchPhotos = async () => {
     const url = "https://jsonplaceholder.typicode.com/albums/1/photos";
 
     try {
+      setIsLoading("Is Loading");
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`);
@@ -32,11 +34,13 @@ function App() {
     } catch (error) {
       console.error(`Could not get ${error}`);
     }
+    setIsLoading("");
   };
 
   //fetch API photos id
   const fetchPhotosId = async (id: string) => {
     const urlUserId = `https://jsonplaceholder.typicode.com/albums/1/photos?id=${id}`;
+    setIsLoading("Is Loading........");
     try {
       const response = await fetch(urlUserId);
       if (!response.ok) {
@@ -48,6 +52,7 @@ function App() {
     } catch (error) {
       console.error(`Could not get ${error}`);
     }
+    setIsLoading("");
   };
 
   const onHandleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,6 +121,7 @@ function App() {
           <label>id</label>
         </div>
       </fieldset>
+      {isLoading}
       <ListComponent data={data} />
     </div>
   );
